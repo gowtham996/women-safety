@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Friend List</title>
+   <!-- Add Bootstrap CDN link -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <!-- Add FontAwesome CDN link -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   <style>
+      body {
+         font-family: 'Arial', sans-serif;
+         background-color: #f8f9fa;
+      }
+
+      header {
+         background-color: #007bff;
+         color: #fff;
+      }
+
+      .container {
+         padding: 20px;
+      }
+
+      h1, h2, h3 {
+         color: #007bff;
+      }
+
+      #friendList, #searchResults {
+         list-style: none;
+         padding: 0;
+      }
+
+      #friendList li, #searchResults li {
+         margin-bottom: 15px;
+         padding: 20px;
+         background-color: #fff;
+         border: 1px solid #ddd;
+         border-radius: 8px;
+      }
+
+      #friendUsername, #searchUsername {
+         margin-top: 15px;
+         padding: 20px;
+         width: 100%;
+      }
+
+      #sendRequestBtn {
+         margin-top: 15px;
+         width: 100%;
+      }
+
+      #confirmationMessage {
+         margin-top: 15px;
+         color: green;
+      }
+
+      .btn-success, .btn-secondary {
+         background-color: #28a745;
+         border-color: #28a745;
+      }
+
+      .btn-info {
+         background-color: #007bff;
+         border-color: #007bff;
+      }
+
+      #searchTable {
+         margin-top: 30px;
+      }
+
+      #searchTable th, #searchTable td {
+         padding: 20px;
+         text-align: center;
+      }
+
+      #searchTable th {
+         background-color: #007bff;
+         color: #fff;
+      }
+
+      #searchTable tbody tr:hover {
+         background-color: #f0f8ff;
+      }
+   </style>
+</head>
+<body>
+   <header class="bg-info text-white text-center py-3">
+      <h1>Friendship Network</h1>
+   </header>
+
+   <div class="container">
+      <div class="row">
+         <div class="col-md-6">
+            <h2>Your Friends List</h2>
+            <ul id="friendList"></ul>
+         </div>
+         <div class="col-md-6">
+            <h3 class="mb-4">Search for Friends</h3>
+            <div class="input-group">
+               <input type="text" id="searchUsername" class="form-control" placeholder="Enter username or email">
+               <div class="input-group-append">
+                  <button class="btn btn-info" id="sendRequestBtn">
+                     <i class="fas fa-search"></i> Search
+                  </button>
+               </div>
+            </div>
+            <div id="searchTable"></div>
+            <p id="confirmationMessage"></p>
+         </div>
+      </div>
+   </div>
+
+   
+
+   <script>
+      document.addEventListener('DOMContentLoaded', function() {
+         const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
+         const friendListContainer = document.getElementById('friendList');
+         const searchTableContainer = document.getElementById('searchTable');
+         const sendRequestBtn = document.getElementById('sendRequestBtn');
+
+         sendRequestBtn.addEventListener('click', searchFriends);
+
+         function searchFriends() {
+            const searchUsername = document.getElementById('searchUsername').value;
+            const results = simulateSearchResults(searchUsername);
+
+            if (results.length > 0) {
+               displaySearchResults(results);
+            } else {
+               searchTableContainer.innerHTML = '<p>No results found.</p>';
+            }
+         }
+
+         function displaySearchResults(results) {
+            const table = document.createElement('table');
+            table.className = 'table table-bordered';
+            table.innerHTML = `
+               <thead>
+                  <tr>
+                     <th>Username</th>
+                     <th>Action</th>
+                  </tr>
+               </thead>
+               <tbody>
+               </tbody>
+            `;
+
+            const tbody = table.querySelector('tbody');
+
+            results.forEach(result => {
+               const row = document.createElement('tr');
+               row.innerHTML = `
+                  <td>${result}</td>
+                  <td>
+                     <button class="btn btn-info btn-sm" onclick="sendFriendRequest('${result}')">
+                        <i class="fas fa-user-plus"></i> Send Request
+                     </button>
+                  </td>
+               `;
+               tbody.appendChild(row);
+            });
+
+            searchTableContainer.innerHTML = '';
+            searchTableContainer.appendChild(table);
+         }
+
+         function simulateSearchResults(username) {
+            // Simulate search results (replace this with actual search logic)
+            return friendList.filter(friend => friend.includes(username));
+         }
+
+         function sendFriendRequest(username) {
+            const confirmationMessage = document.getElementById('confirmationMessage');
+
+            if (username && !friendList.includes(username)) {
+               friendList.push(username);
+               localStorage.setItem('friendList', JSON.stringify(friendList));
+               appendFriendToList(username);
+
+               confirmationMessage.textContent = `Friend request sent to ${username}.`;
+            } else {
+               confirmationMessage.textContent = 'Invalid username or already a friend.';
+            }
+         }
+
+         function appendFriendToList(username) {
+            const listItem = document.createElement('li');
+            listItem.textContent = username;
+            friendListContainer.appendChild(listItem);
+         }
+         
+         // Check if the user is logged in using local storage
+         const currentUserData = localStorage.getItem('currentUser');
+         const currentUser = currentUserData ? JSON.parse(currentUserData) : null;
+
+         if (currentUser) {
+            // Display the user's friends from local storage
+            currentUser.friends.forEach(friend => {
+               appendFriendToList(friend);
+            });
+         }
+      });
+   </script>
+
+   <!-- Include Bootstrap, jQuery, and FontAwesome CDN scripts -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+</body>
+
+</html>

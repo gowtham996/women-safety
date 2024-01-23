@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: #EEE0C9; /* Background color */
+            margin: 0;
+            padding: 0;
+        }
+    
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        .login-container {
+            width: 400px;
+            background: rgba(241, 240, 232, 0.8); /* Background color with opacity */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        .btn-primary {
+            background-color: #96B6C5; /* Button color */
+            border-color: #96B6C5; /* Button border color */
+        }
+    
+        .btn-primary:hover {
+            background-color: #ADC4CE; /* Button hover color */
+            border-color: #ADC4CE; /* Button hover border color */
+        }
+    
+        .text-center {
+            color: #F1F0E8; /* Text color */
+        }
+    
+        .text-center a {
+            color: #F1F0E8; /* Link color */
+        }
+    
+        .text-center a:hover {
+            text-decoration: underline;
+        }
+    
+        /* Additional text color style */
+        input,
+        label,
+        p,
+        h2,
+        .text-center.mb-4 {
+            color: #0F2C59; /* Text color */
+        }
+    </style>
+    
+    
+    
+    
+    
+    <title>Woman Protection Login</title>
+</head>
+
+<body>
+   <div class="container">
+      <div class="login-container">
+          <h2 class="text-center mb-4">Woman Protection Login</h2>
+          <form id="loginForm">
+              <div class="form-group">
+                  <label for="identifier">Username or Email:</label>
+                  <input type="text" class="form-control" id="identifier" name="identifier" required>
+              </div>
+              <div class="form-group">
+                  <label for="password">Password:</label>
+                  <input type="password" class="form-control" id="password" name="password" required>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Login</button>
+              <p class="text-center mt-3">New user? <a href="#" onclick="showSignUp()">Sign Up</a></p>
+          </form>
+
+            <form id="signupForm" style="display: none;">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="newEmail">Email:</label>
+                    <input type="email" class="form-control" id="newEmail" name="newEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age (above 15):</label>
+                    <input type="number" class="form-control" id="age" name="age" required min="16">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Password (at least 6 characters with one special character):</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword"
+                        required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                <p class="text-center mt-3">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            loginUser();
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            signupUser();
+        });
+
+        function loginUser() {
+            const identifier = document.getElementById('identifier').value;
+            const password = document.getElementById('password').value;
+            
+            // Check if user exists in localStorage
+            const users = Object.values(localStorage);
+            const userData = users.find(user => {
+                const parsedUser = JSON.parse(user);
+                return parsedUser.username === identifier || parsedUser.newEmail === identifier;
+            });
+
+            if (userData) {
+                const parsedUserData = JSON.parse(userData);
+                if (parsedUserData.password === password) {
+                    alert('Login successful!');
+                    // Redirect to index.html (code2.html)
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Invalid password');
+                }
+            } else {
+                alert('User with this username or email does not exist');
+            }
+        }
+
+        function signupUser() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('newEmail').value;
+            const phone = document.getElementById('phone').value;
+            const age = document.getElementById('age').value;
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            // Check if user already exists
+            const existingUser = Object.values(localStorage).find(user => {
+                const parsedUser = JSON.parse(user);
+                return parsedUser.username === username || parsedUser.newEmail === email;
+            });
+
+            if (existingUser) {
+                alert('User with this username or email already exists');
+                return;
+            }
+
+            // Store user data in localStorage
+            const userData = {
+                username,
+                newEmail: email,
+                phone,
+                age,
+                password
+            };
+
+            localStorage.setItem(username + email, JSON.stringify(userData));
+            alert('Signup successful! Please login.');
+            showLogin(); // Switch to login form after signup
+        }
+
+        function showSignUp() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+        }
+
+        function showLogin() {
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'block';
+        }
+        signup()
+    </script>
+</body>
+
+</html>
