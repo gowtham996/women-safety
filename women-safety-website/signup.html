@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Bellefair', sans-serif;
+            background-color: #EEE0C9;
+            color: #0F2C59;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        h2 {
+            color: #0F2C59; /* Text color for the signup page header */
+        }
+
+        #signupForm input,
+        #signupForm label {
+            color: #0F2C59; /* Text color for form elements */
+        }
+
+        #header {
+            background-color: #96B6C5;
+            color: #F1F0E8;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            border-bottom: 2px solid #ADC4CE;
+        }
+
+        #logo_text h1 {
+            color: #F1F0E8; /* Color for the "Hey!!!" logo text */
+        }
+
+        #menu a {
+            text-decoration: none;
+            color: #F1F0E8; /* Color for links in the menu */
+        }
+
+        #menu a:hover {
+            color: #ADC4CE; /* Hover effect color for links in the menu */
+        }
+
+        .friend-request-btn {
+            color: #F1F0E8; /* Color for the friend request button */
+        }
+
+        .friend-request-btn:hover {
+            color: #F1F0E8; /* Color for the friend request button on hover */
+        }
+
+        #footer {
+            background-color: #EAC7C7;
+            color: #F1F0E8;
+            padding: 10px;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+    <title>Woman Protection Signup</title>
+</head>
+
+<!-- Rest of the HTML code remains unchanged -->
+
+    <title>Woman Protection Signup</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Woman Protection Sign Up</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age (above 14):</label>
+                    <input type="number" class="form-control" id="age" name="age" required min="15">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password (at least 6 characters with one special character):</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                        required pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                <p class="text-center mt-3">Already have an account? <a href="login.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            signupUser();
+        });
+
+        function signupUser() {
+            // Retrieve user input
+            const name = document.getElementById('name').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const age = document.getElementById('age').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            // Check if user already exists
+            const existingUser = Object.values(localStorage).find(user => {
+                const parsedUser = JSON.parse(user);
+                return parsedUser.username === username || parsedUser.email === email;
+            });
+
+            if (existingUser) {
+                alert('User with this username or email already exists');
+                return;
+            }
+
+            // Store user data in localStorage
+            const userData = {
+                name,
+                username,
+                email,
+                age,
+                phone,
+                password
+            };
+
+            localStorage.setItem(username + email, JSON.stringify(userData));
+            alert('Signup successful! Please login.');
+            window.location.href = 'index1.html'; // Redirect to the login page
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Women Safety</title>
+    <meta name="description" content="Ensuring your safety with a click">
+    <meta name="keywords" content="women safety, guardians, emergency contact">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css" title="style">
+    <?php include 'includes/call1.php';?>
+    <?php include 'includes/call2.php';?>
+    <?php include 'includes/call3.php';?>
+
+    <style>
+        body {
+            background-color: #F7F0D4;
+            color: #0F2C59;
+            font-family: 'New Rocker', cursive;
+        }
+
+        #header {
+            background-color: #96B6C5;
+            border-bottom: 2px solid #ADC4CE;
+            color: #F1F0E8;
+            padding: 10px;
+        }
+
+        #logo_text h1 a, #logo_text h2 {
+            color: #F1F0E8;
+        }
+
+        #menu a {
+            color: #F1F0E8;
+        }
+
+        #menu a:hover {
+            background-color: #ADC4CE;
+        }
+
+        .sidebar {
+            background-color: #F1F0E8;
+            padding: 10px;
+            margin-top: 20px;
+        }
+
+        .sidebar h3, .sidebar p, .sidebar h4 {
+            color: #0F2C59;
+        }
+
+        .content-container {
+            margin-top: 20px;
+        }
+
+        .container {
+            background-color: #F1F0E8;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline-primary {
+            background-color: #0F2C59;
+            color: #F1F0E8;
+            border: 1px solid #0F2C59;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #ADC4CE;
+            color: #F1F0E8;
+        }
+
+        .btn-outline-secondary {
+            background-color: #F1F0E8;
+            color: #0F2C59;
+            border: 1px solid #0F2C59;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #ADC4CE;
+            color: #0F2C59;
+        }
+
+        #footer {
+            background-color: #EAC7C7;
+            color: #F1F0E8;
+            padding: 10px;
+            text-align: center;
+            border-top: 2px solid #ADC4CE;
+        }
+    </style>
+
+    <script type="text/javascript">
+        // Your existing JavaScript functions remain unchanged
+    </script>
+</head>
+
+<body data-gr-c-s-loaded="true" class="vsc-initialized">
+    <div id="main">
+        <div id="header">
+            <div id="logo">
+                <div id="logo_text">
+                    <h1><a href="#"><span class="logo_colour">Hey!!! &nbsp</span><span class="logo_colour2">Making Sure
+                                Your Safety</span></a></h1>
+                    <h2>Take care of yourself. Many people out there love you</h2>
+                </div>
+            </div>
+            <div id="menubar">
+                <ul id="menu">
+                    <li><a href="index.html">Welcome Page</a></li>
+                    <li><a href="page_one.html">Navigation</a></li>
+                    <li><a href="page_two.html">Safe Zone</a></li>
+                    <li class="selected"><a href="page_three.html">Guardians</a></li>
+                    <li><a href="page_four.html">Safety Alarm</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="site_content">
+            <div class="sidebar">
+                <h3>Stay connected with your loved ones</h3>
+                <p>Click on the name to send them a quick message</p>
+                <h4 onclick="change6()">Papa</h4>
+                <p>Status: Active</p>
+
+                <h4 onclick="change7()">Mummy</h4>
+                <p>Status: Active</p>
+
+                <h4 onclick="change8()">Husband</h4>
+                <p>Status: Silent</p>
+
+                <h4 onclick="change1()">Jahnvi</h4>
+                <p>Status: Active</p>
+
+                <h4 onclick="change2()">Raj </h4>
+                <p>Status: Silent</p>
+
+                <h4 onclick="change3()">Smit</h4>
+                <p>Status: Active</p>
+
+                <h4 onclick="change4()">Aastha</h4>
+                <p>Status: Silent</p>
+
+                <h4 onclick="change5()">Kajal</h4>
+                <p>Status: Vibration</p>
+            </div>
+            <div class="content-container">
+                <button type="call" name="callsafety" class="btn btn-outline-primary mt-3" id="btncall">Call 1901
+                </button>
+                <div class="container">
+                    <form method="POST" action="#">
+                        <label for="lblMobileNumber">Mobile Number 1</label>
+                        <input type="tel" name="userMobile1" class="form-control" id="number1" value="8884014669"
+                            placeholder="8884014669" required pattern="[789][0-9]{9}"
+                            oninvalid="PleaseEnterProperMobileNumber">
+                        <label for="lblMessage">Message</label>
+                        <textarea class="form-control" name="userMessage1" required id="textMessage1" rows="3"
+                            placeholder="Please save me. I am in Danger" maxlength="158">Please save me. I am in Danger
+                        </textarea>
+                        <button type="submit" name="SubmitButton1" class="btn btn-outline-primary mt-3" id="btnSend">Send
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary mt-3 ml-3"
+                            onclick="clearAllFields1()">Clear</button>
+                    </form>
+                </div>
+                <div class="container">
+                    <form method="POST" action="#">
+                        <label for="lblMobileNumber">Mobile Number 2</label>
+                        <input type="tel" name="userMobile2" class="form-control" id="number2" value="9825042341"
+                            placeholder="9825042341" required pattern="[789][0-9]{9}"
+                            oninvalid="PleaseEnterProperMobileNumber">
+                        <label for="lblMessage">Message</label>
+                        <textarea class="form-control" name="userMessage2" required id="textMessage2" rows="3"
+                            placeholder="Please save me. I am in Danger" maxlength="158">Please save me. I am in Danger
+                        </textarea>
+                        <button type="submit" name="SubmitButton2" class="btn btn-outline-primary mt-3" id="btnSend">Send
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary mt-3 ml-3"
+                            onclick="clearAllFields2()">Clear</button>
+                    </form>
+                </div>
+                <div class="container">
+                    <form method="POST" action="#">
+                        <label for="lblMobileNumber">Mobile Number 3</label>
+                        <input type="tel" name="userMobile3" class="form-control" id="number3" value="7698225243"
+                            placeholder="7698225243" required pattern="[789][0-9]{9}"
+                            oninvalid="PleaseEnterProperMobileNumber">
+                        <label for="lblMessage">Message</label>
+                        <textarea class="form-control" name="userMessage3" required id="textMessage3" rows="3"
+                            placeholder="Please save me. I am in Danger" maxlength="158">Please save me. I am in Danger
+                        </textarea>
+                        <button type="submit" name="SubmitButton3" class="btn btn-outline-primary mt-3" id="btnSend">Send
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary mt-3 ml-3"
+                            onclick="clearAllFields3()">Clear</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            With Love ❤️ by Team Virus Vixens
+        </div>
+    </div>
+</body>
+
+</html>

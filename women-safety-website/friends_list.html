@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Friend List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #0F2C59;
+            margin: 0;
+            padding: 20px;
+            background-color: #F9F9F9; /* Light Grey */
+            background-image: url('gowtham.webp'); /* Path to your background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.8; /* Adjust the opacity value as needed (0.0 to 1.0) */
+        }
+
+        header {
+            background-color: rgba(255, 105, 180, 0.8); /* Pink background with opacity */
+            color: #F1F0E8;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #007FFF; /* Azure Blue */
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        input[type="text"] {
+            margin-top: 15px;
+            padding: 10px;
+            width: calc(100% - 120px);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background-color: #FF69B4; /* Hot Pink */
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #searchTable {
+            margin-top: 30px;
+        }
+
+        #searchTable th,
+        #searchTable td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        #searchTable th {
+            background-color: #800080; /* Purple */
+            color: #F9F9F9;
+        }
+
+        #searchTable tbody tr:hover {
+            background-color: #32CD32; /* Lime Green */
+            color: #F9F9F9;
+        }
+
+        .btn-sm {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #32CD32; /* Lime Green */
+            color: #fff;
+        }
+
+        .alert-danger {
+            background-color: #dc3545; /* Red */
+            color: #fff;
+        }
+
+        /* New Styles */
+        .friend-list {
+            margin-top: 20px;
+        }
+
+        .friend-list .list-group-item {
+            border: none;
+            background-color: transparent;
+            padding: 0;
+        }
+
+        .friend-list .list-group-item .friend-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .friend-list .list-group-item:last-child .friend-info {
+            border-bottom: none;
+        }
+
+        .friend-list .list-group-item .btn-remove {
+            background-color: #dc3545; /* Red */
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .friend-list .list-group-item .btn-remove:hover {
+            background-color: #c82333; /* Darker Red */
+        }
+
+        /* Search Table */
+        .search-table {
+            margin-top: 30px;
+        }
+
+        .search-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .search-table th,
+        .search-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .search-table th {
+            background-color: #007BFF; /* Blue */
+            color: #fff;
+        }
+
+        .search-table tbody tr:hover {
+            background-color: #F8F9FA; /* Light Blue */
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Friendship Network</h1>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Your Friends List</h2>
+                <div id="friendList" class="friend-list">
+                    <!-- Friend list items will be added dynamically -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class="mb-4">Search for Friends</h3>
+                <div>
+                    <form id="searchForm">
+                        <input type="text" id="searchUsername" class="form-control" placeholder="Enter username or email" required>
+                        <div class="invalid-feedback">Please enter a username.</div>
+                        <button type="submit" class="btn btn-primary mt-3">Search</button>
+                    </form>
+                </div>
+                <div id="searchTable" class="search-table"></div>
+                <p id="confirmationMessage"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const friendList = JSON.parse(localStorage.getItem('friendList')) || [];
+            const friendListContainer = document.getElementById('friendList');
+            const searchTableContainer = document.getElementById('searchTable');
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            const searchForm = document.getElementById('searchForm');
+            const searchUsernameInput = document.getElementById('searchUsername');
+
+            searchForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                searchFriends();
+            });
+
+            function searchFriends() {
+                const searchUsername = searchUsernameInput.value.trim();
+                if (searchUsername === '') {
+                    searchUsernameInput.classList.add('is-invalid');
+                    return;
+                }
+
+                const results = simulateSearchResults(searchUsername);
+                if (results.length > 0) {
+                    displaySearchResults(results);
+                } else {
+                    displayMessage('No results found.', false);
+                }
+            }
+
+            function displaySearchResults(results) {
+                let table = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                results.forEach(result => {
+                    table += `
+                        <tr>
+                            <td>${result}</td>
+                            <td>
+                                <button onclick="sendFriendRequest('${result}')">
+                                    Send Request
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+
+                table += `</tbody></table>`;
+
+                searchTableContainer.innerHTML = table;
+            }
+
+            function simulateSearchResults(username) {
+                // Simulate search results (replace this with actual search logic)
+                return friendList.filter(friend => friend.toLowerCase().includes(username.toLowerCase()));
+            }
+
+            function sendFriendRequest(username) {
+                if (username && !friendList.includes(username)) {
+                    friendList.push(username);
+                    localStorage.setItem('friendList', JSON.stringify(friendList));
+                    appendFriendToList(username);
+                    displayMessage(`Friend request sent to ${username}.`, true);
+                } else {
+                    displayMessage('Invalid username or already a friend.', false);
+                }
+            }
+
+            function appendFriendToList(username) {
+                const card = document.createElement('div');
+                card.classList.add('card', 'mb-3');
+                card.innerHTML = `
+                    <div>
+                        <span>${username}</span>
+                        <button onclick="removeFriend('${username}')">Remove</button>
+                    </div>
+                `;
+                friendListContainer.appendChild(card);
+            }
+
+            function removeFriend(username) {
+                const index = friendList.indexOf(username);
+                if (index !== -1) {
+                    friendList.splice(index, 1);
+                    localStorage.setItem('friendList', JSON.stringify(friendList));
+                    displayMessage(`Removed ${username} from your friend list.`, true);
+                    refreshFriendList();
+                }
+            }
+
+            function refreshFriendList() {
+                friendListContainer.innerHTML = '';
+                friendList.forEach(friend => {
+                    appendFriendToList(friend);
+                });
+            }
+
+            function displayMessage(message, success) {
+                const alertClass = success ? 'alert-success' : 'alert-danger';
+                confirmationMessage.innerHTML = `
+                    <div class="alert">
+                        ${message}
+                    </div>
+                `;
+                setTimeout(() => {
+                    confirmationMessage.innerHTML = '';
+                }, 3000); // Clear message after 3 seconds
+            }
+
+            // Populate friend list from local storage
+            friendList.forEach(friend => {
+                appendFriendToList(friend);
+            });
+        });
+    </script>
+</body>
+
+</html>
